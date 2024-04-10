@@ -3,11 +3,7 @@ package com.sky.mapper;
 import com.github.pagehelper.Page;
 import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface EmployeeMapper {
@@ -22,7 +18,6 @@ public interface EmployeeMapper {
             "(#{name}, #{username}, #{password}, #{phone}, #{sex}, #{idNumber}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser}, #{status})")
     void insert(Employee employee);
 
-
     /**
      * 根据用户名查询员工
      * @param username
@@ -33,9 +28,23 @@ public interface EmployeeMapper {
 
     /**
      * 分页查询员工
-     * @param page
-     * @param size
+     * @param queryDTO
      * @return
      */
     Page<Employee> find(EmployeePageQueryDTO queryDTO);
+
+    /**
+     * 更新
+     * @param employee
+     * @return
+     */
+    void update(Employee employee);
+
+    /**
+     * 查询用户 by id
+     * @param id
+     * @return
+     */
+    @Select("SELECT * FROM employee WHERE id = #{id}")
+    Employee findById(@Param("id") Long id);
 }

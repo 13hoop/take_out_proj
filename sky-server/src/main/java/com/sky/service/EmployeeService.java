@@ -18,4 +18,8 @@ public interface EmployeeService {
     Employee add(EmployeeDTO employeeDTO);
 
     PageResult queryList(EmployeePageQueryDTO queryDTO);
+
+    Employee lockStatus(Integer status, Long id);
+
+    Employee findBy(Long id);
 }

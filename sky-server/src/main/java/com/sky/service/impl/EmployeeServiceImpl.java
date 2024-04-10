@@ -21,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -118,4 +119,29 @@ public class EmployeeServiceImpl implements EmployeeService {
         return result;
     }
 
+    @Override
+    public Employee lockStatus(Integer status, Long id) {
+
+        log.info("  👉👉👉 lock {} ----> {}", id, status);
+
+        // 查询出对应的员工
+        Employee employee = employeeMapper.findById(id);
+
+        // 调整员工的status
+        employee.setStatus(status);
+        employee.setUpdateTime(LocalDateTime.now());
+        // 更新者的id, 当前登陆用户id
+        Long currentId = BaseContext.getCurrentId();
+        employee.setUpdateUser(currentId);
+
+        // 更新员工
+        employeeMapper.update(employee);
+
+        return employee;
+    }
+
+    @Override
+    public Employee findBy(Long id) {
+        return employeeMapper.findById(id);
+    }
 }

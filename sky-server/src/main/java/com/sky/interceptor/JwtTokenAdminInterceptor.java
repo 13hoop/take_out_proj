@@ -47,7 +47,7 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             log.info("jwt校验:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
             Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
-            log.info("当前员工id：", empId);
+            log.info("👉👉👉 当前员工id：{}", empId);
 
             // TODO: 拦截器中可以解析出当前用户id, 那么该如何传递给其他地方使用呢? -- ThreadLocal
             BaseContext.setCurrentId(empId);
@@ -55,6 +55,8 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             //3、通过，放行
             return true;
         } catch (Exception ex) {
+            log.info("❌❌❌ jwt校验: 校验不通过, 重新登陆 ❌❌❌");
+
             //4、不通过，响应401状态码
             response.setStatus(401);
             return false;

@@ -35,6 +35,34 @@ public class EmployeeController {
     @Autowired
     private JwtProperties jwtProperties;
 
+    /**
+     * 查找用户详情接口
+     * @param id
+     * @return
+     */
+    @ApiOperation("查找用户详情")
+    @PostMapping("/info")
+    public Result<Employee> findBy(Long id) {
+        log.info("👉👉👉 find by id = {}", id);
+
+        Employee employee = employeeService.findBy(id);
+        return Result.success(employee);
+    }
+
+    /**
+     * 员工锁定
+     * @param status: 0为锁定, 1为正常
+     * @param id: 用户id
+     * @return
+     */
+    @ApiOperation("员工是否锁定")
+    @PostMapping("/status/{status}")
+    public Result<Employee> updateEmployeeLockStatusBy(@PathVariable Integer status, Long id) {
+        log.info("👉👉👉 lock {} ----> [status]_({})", id, status);
+
+        Employee employee = employeeService.lockStatus(status, id);
+        return Result.success(employee);
+    }
 
     @ApiOperation("员工列表查询, 姓名模糊查询")
     @GetMapping("/page")
@@ -45,14 +73,13 @@ public class EmployeeController {
 
     /**
      * 新增员工接口
-     * @param EmployeeDTO
+     * @param employeeDTO
      * @return Result
      */
     @PostMapping
     @ApiOperation("新增员工")
     public Result save(@RequestBody EmployeeDTO employeeDTO) {
         log.info(" -->>> ", employeeDTO);
-
         Employee employee = employeeService.add(employeeDTO);
         return Result.success(employee);
     }
