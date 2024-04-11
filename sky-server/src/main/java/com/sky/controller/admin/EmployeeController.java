@@ -35,14 +35,21 @@ public class EmployeeController {
     @Autowired
     private JwtProperties jwtProperties;
 
+    @ApiOperation("更新用户信息")
+    @PutMapping
+    public Result<Employee> update(@RequestBody EmployeeDTO employeeDTO) {
+        Employee employee = employeeService.update(employeeDTO);
+        return Result.success();
+    }
+
     /**
      * 查找用户详情接口
      * @param id
      * @return
      */
     @ApiOperation("查找用户详情")
-    @PostMapping("/info")
-    public Result<Employee> findBy(Long id) {
+    @GetMapping("/{id}")
+    public Result<Employee> findBy(@PathVariable Long id) {
         log.info("👉👉👉 find by id = {}", id);
 
         Employee employee = employeeService.findBy(id);

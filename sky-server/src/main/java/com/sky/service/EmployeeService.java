@@ -22,4 +22,6 @@ public interface EmployeeService {
     Employee lockStatus(Integer status, Long id);
 
     Employee findBy(Long id);
+
+    Employee update(EmployeeDTO employeeDTO);
 }

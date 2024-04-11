@@ -65,6 +65,9 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
         }
 
+        // 密码不要返回
+        employee.setPhone("****");
+
         //3、返回实体对象
         return employee;
     }
@@ -93,6 +96,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setUpdateUser(currentId);
 
         employeeMapper.insert(employee);
+
+        // 密码不要返回
+        employee.setPhone("****");
         return employee;
     }
 
@@ -136,7 +142,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // 更新员工
         employeeMapper.update(employee);
-
+        // 密码不要返回
+        employee.setPhone("****");
         return employee;
     }
 
@@ -144,4 +151,25 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee findBy(Long id) {
         return employeeMapper.findById(id);
     }
+
+    @Override
+    public Employee update(EmployeeDTO employeeDTO) {
+
+        Employee employee = Employee.builder().build();
+
+        // copy 信息
+        BeanUtils.copyProperties(employeeDTO, employee);
+
+        // 更新信息
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+
+        employeeMapper.update(employee);
+
+        // 密码不要返回
+        employee.setPhone("****");
+        return employee;
+    }
+
+
 }
